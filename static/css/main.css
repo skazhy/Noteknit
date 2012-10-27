@@ -110,7 +110,7 @@ h2.note {
 }
 
 #knit {
-    display: none;
+    /*display: none;*/
     position: absolute;
     z-index:20;
 }
