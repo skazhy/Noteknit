@@ -49,6 +49,7 @@ $(function() {
             var map = this.map(function(e) { return e.get("el").position(); });
             var sortedMap = _.sortBy(map, function(m) { return m.left });
             $("#output").text(_.map(sortedMap, function(m) { return Math.round(m.top) }));
+            return _.map(sortedMap, function(m) { return Math.round(m.top) });
         }
     });
     
@@ -56,9 +57,10 @@ $(function() {
     song.on("add", function() {
         this.outputCode();
     });
-    song.on("destroy", function() {
+    song.on("destroy", function(mod) {
         this.outputCode();
     });
+    song.on("reset", function() { $(".activeNote").remove(); });
     
     $("#notebox").draggable({ handle: "#mover" });
     $('.note').draggable({
@@ -66,8 +68,12 @@ $(function() {
         helper: "clone",
     }).bind('dragstop', function(event, ui) {
      var note = new Note();
+     note.on("destroy", function() {
+         console.log(1);
+     });
      var copy = $(ui.helper).clone();
      copy.attr("id", note.cid);
+     copy.addClass("activeNote");
      song.add(note, {silent: true});
      
      copy.bind("dragstop", function() {
@@ -83,7 +89,15 @@ $(function() {
      
     });
     $("#save-button").click(function() {
-        song.outputCode();
+        var map = song.outputCode();
+        var name = $("#song-name").val();
+        $.post("http://localhost:4567/song/", {song: map, name: name}); 
+    });
+
+    $("#textarea-button").click(function() {
+        var ta = $("#textarea").val();
+        console.log(ta.split(" "));
+        song.reset();
     });
     
     $('.dest').droppable({ });
