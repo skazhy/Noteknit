@@ -88,7 +88,7 @@
     //variables
     var gestureClassifier = null;
     var notationImages = new Object();
-    var isIphone = navigator.userAgent.indexOf('iPhone') >= 0 || navigator.userAgent.indexOf('iPad') >= 0 || navigator.userAgent.indexOf("android") >=0;
+    var isIphone = true; 
     var gestureClassifier = null;
     var staffSize = 128;
     var advancedOptionsShown = false;
@@ -125,46 +125,6 @@
         }
     }  
   
-    /*function changeInkColor()
-    {
-        var r = document.getElementById("inkColorRed").value;
-        var g = document.getElementById("inkColorGreen").value;
-        var b = document.getElementById("inkColorBlue").value;
-        var a = document.getElementById("inkAlpha").value / 100;
-        
-        gestureClassifier.getCanvasDraw().getPencil().setInkColor(r, g, b, a);
-        drawInkColorPalette();
-    }*/
-    
-    /*function drawInkColorPalette()
-    {
-        var paletteCanvas = document.getElementById("inkColorCanvas");
-        if (paletteCanvas)
-        {
-            Utils.clearCanvas(paletteCanvas);
-            var paletteContext = paletteCanvas.getContext("2d");
-            paletteContext.fillStyle = gestureClassifier.getCanvasDraw().getPencil().getInkColor();
-            paletteContext.fillRect(0, 0, paletteCanvas.width, paletteCanvas.height);
-        }    
-    }*/
-    
-    /*function showHideAdvancedOptions()
-    {
-        advancedOptionsShown = !advancedOptionsShown;
-
-        if (advancedOptionsShown)
-        {
-            document.getElementById("advancedOptions").style.visibility = "visible";
-            document.getElementById("showHideAdvancedOptionsLink").innerHTML = "less options";
-        }
-        else
-        {
-            document.getElementById("advancedOptions").style.visibility = "hidden";        
-            document.getElementById("showHideAdvancedOptionsLink").innerHTML = "more options &hellip;";
-        }
-        
-    }*/
-    
     function clearAll()
     {
         //        var confirmation = confirm("Are you sure you want clear the page?");
@@ -175,117 +135,6 @@
         
         return false;
     }
-/*
-    function loadInk()
-    {    
-        inkRows = db.view("ink/all").rows;
-        inkRowIndex = 0;
-        testInkLoaded = true;
-        displayInk();
-    }
-    *//*
-    function nextInk()
-    {
-        if (!testInkLoaded)
-        {
-            loadInk();
-            return;
-        }
-
-        inkRowIndex ++;
-        if (inkRowIndex >= inkRows.length)
-        {
-            inkRowIndex = inkRows.length - 1;
-        }
-        displayInk();
-    }
-    *//*
-    function prevInk()
-    {
-        if (!testInkLoaded)
-        {
-            loadInk();
-            return;
-        }    
-        inkRowIndex --;
-        if (inkRowIndex <= 0)
-        {
-            inkRowIndex = 0;
-        }
-        displayInk();        
-    }
-    *//*
-    function displayInk()
-    {    
-        //update user feedback
-        var testStep = document.getElementById("testStep");
-        testStep.innerHTML = (inkRowIndex + 1) + " of " + inkRows.length + " " + inkRows[inkRowIndex].value._id;
-        
-        var inkRow = inkRows[inkRowIndex];        
-        gestureClassifier.getCanvasDraw().getPencil().clearAll();
-        gestureClassifier.getCanvasDraw().getPencil().replayInk(inkRow.value);
-
-        //display previous image
-        var testImageDiv = document.getElementById("testImage");
-        var testImage = new Image();
-        if ("imageData" in inkRows[inkRowIndex].value)
-        {
-            testImage.src = inkRows[inkRowIndex].value.imageData;
-        }//otherwise display blank image
-        
-        testImageDiv.innerHTML = "";
-        testImageDiv.appendChild(testImage);
-        if (autoPlayTests() && inkRowIndex < inkRows.length - 1)
-        {
-            inkRowIndex ++;
-            setTimeout(displayInk, INK_PLAYBACK_INTERVAL_MS);
-        }
-    }
-    */
-    //test ink scaling and registration by cycling through all ink and attempt to classify it against itself
-    //TODO: have an automated pass/fail metric for this
-  /*  function selfInkTest()
-    {
-        //cycle through scales 
-        for (var i = Staff.STAFF_SIZES.length; i > 0; i --)
-        {
-            gestureClassifier.getCanvasDraw().getPencil().resizeToNearestStaffSize(Staff.STAFF_SIZES[i]);
-            gestureClassifier.selfMatch(Staff.STAFF_SIZES[i]);
-        }
-        
-    }
-    function saveInk()
-    {
-        var ink = gestureClassifier.getCanvasDraw().getPencil().ink.serialize();
-        var recognizedSymbols = gestureClassifier.getCanvasDraw().getStaff().serializeSymbols();
-        //todo, add bitmap snapshot of recognition
-        var c = gestureClassifier.getCanvasDraw().getCanvas();
-        var imageData =  c.toDataURL();
-        
-        //console.log(imageData);
-        ink.imageData = imageData;
-        ink.recognizedSymbols = recognizedSymbols;
-        ink.version = CURRENT_INK_VERSION;
-        if (ink)
-        {
-            db.save(ink);
-        }
-        
-    }
-    *//*
-    function autoPlayTests()
-    {
-        return document.getElementById("autoplayCheckbox").checked;
-    }
-    function useAutoLearn()
-    {
-        return document.getElementById("autolearnCheckbox").checked;
-    }*/
-    function useScaleTestMode()
-    {
-        //return document.getElementById("scaleTestModeCheckbox").checked;       TODO: uncomment 
-    }
-    
     </script>
 
     </head>
