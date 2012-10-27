@@ -28,8 +28,7 @@ $(function() {
     }
   }
     $("#knit-button").click(function() {
-        console.log(1);
-        $("canvas").bind("mousedown", knit);
+        $("canvas").bind("click", knit);
     });
     var Note = Backbone.Model.extend({
     });
@@ -61,17 +60,19 @@ $(function() {
      var note = new Note();
      var copy = $(ui.helper).clone();
      copy.attr("id", note.cid);
+     song.add(note, {silent: true});
+     
      copy.bind("dragstop", function() {
          song.outputCode();
      });
      note.set("el", copy);
-     copy.draggable({ revert: "invalid", grid: [10, 20] }).bind("dblclick", function() { 
+     copy.draggable({ revert: "invalid", grid: [11, 20] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
      $(this).after(copy);
+     song.outputCode();
      
-     song.add(note);
     });
     
     $('.dest').droppable({ });
