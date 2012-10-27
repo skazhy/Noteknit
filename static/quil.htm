@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Noteknit</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+﻿<!DOCTYPE html>
+<!-- saved from url=(0017)http://iquil.com/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="apple-touch-icon" href="http://iquil.com/media/iquil_icon.png">
+    <meta charset="utf-8">
+    <title>quil</title>
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/960.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.9.1.custom.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="js/underscore-min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="js/backbone-min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="js/noteknit.js"></script>
-
-
-        <!--*******draw input********-->
     <!-- utilities -->
     <script type="text/javascript" src="./quil_files/Utils.js"></script>
     <script type="text/javascript" src="./quil_files/XmlHttpRequest.js"></script>
@@ -54,78 +38,157 @@
     <script type="text/javascript" src="./quil_files/Bigram.js"></script>
     <script type="text/javascript" src="./quil_files/Language.js"></script>
 
-        <script type="text/javascript">
-            //define global fetamap var before loading the lilypond feta font maps
-            //this is really a C++ file, but will interpret fine as javascript 
-            //so long as the var _fetaMap is defined first as an object
-            var _fetaMap = new Object();
-            //load feta (emmantaler) character mappings
+    <!-- rastral, the notation rendering engine --> 
+
+    <!--font embeds -->
+	<link rel="stylesheet" href="./quil_files/stylesheet.css" type="text/css" charset="utf-8">    
+    
+    <script type="text/javascript">
+    //define global fetamap var before loading the lilypond feta font maps
+    //this is really a C++ file, but will interpret fine as javascript 
+    //so long as the var _fetaMap is defined first as an object
+    var _fetaMap = new Object();
+    //load feta (emmantaler) character mappings
     </script>
     <script type="text/javascript" src="./quil_files/fetaList.js"></script>
     <script type="text/javascript" src="./quil_files/Rastral.js"></script>
     <script type="text/javascript" src="./quil_files/Symbol.js"></script>
     <script type="text/javascript" src="./quil_files/Staff.js"></script>
     <script type="text/javascript" src="./quil_files/Clef.js"></script>
+    
 
-        <script type="text/javascript">
+    <style type="text/css">
+        body
+        {
+            font-family: Verdana, Helvetica, Arial, sans-serif;
+        }
+		* {
+			-webkit-user-select: none;
+		}
+		* {
+			-webkit-touch-callout: none;
+		}
+		* {
+		   -webkit-tap-highlight-color: rgba(0,0,0,0);
+		}		
+		* {
+		   -webkit-text-size-adjust: none;
+		}
+		#canvasView 
+		{
+			//border: 1px dashed #bbc;
+            float: top;
+		}
+        #canvas1
+        {
+            margin-left: 8px;
+			border: 1px dashed #bbc;
+            //float:left;
+            visibility: hidden;
+            display: none;
+        }
+        #canvas2
+        {
+            margin-left: 8px;
+			border: 1px dashed #bbc;
+            //float: right;
+            visibility: hidden;                    
+            display: none;
+        }
+        #controls
+        {
+           position: absolute;
+           top: 500px; 
+        }
+        
+        #inkColorCanvas
+        {
+            border: 1px solid black;
+        }
+        
+        #advancedOptions
+        {
+            visibility: hidden;
+            border: 1px black dashed;
+        }
+        #showHideAdvancedOptionsLink
+        {
+            text-decoration: none;
+            color: black;
+        }
+        
+        #symbolOptions
+        {
+            position: absolute;
+            z-index: 2;
+            border: 2px solid black;
+            background-color: white;
+            visibility: hidden;
+        }
+        #testingOptions
+        {
+            visibility: hidden;        
+        }
+    </style>    
+  <script type="text/javascript">
   <!--
 
-    //globals
+  //globals
   
-    function Quil()
-    {
+  function Quil()
+  {
   
   
-    }
+  }
   
-    //constants
+  //constants
   const IMAGE_PATH = "media/";
   const MAIN_CONTAINER_ID = "container";
   const DEBUG_LEVEL = 0;
   const INK_PLAYBACK_INTERVAL_MS = 3000;
   const CURRENT_INK_VERSION = 0.1;
 
-    //variables
-    var gestureClassifier = null;
-    var notationImages = new Object();
-    var isIphone = navigator.userAgent.indexOf('iPhone') >= 0 || navigator.userAgent.indexOf('iPad') >= 0 || navigator.userAgent.indexOf("android") >=0;
-    var gestureClassifier = null;
-    var staffSize = 128;
-    var advancedOptionsShown = false;
-    var db = new CouchDB('quil');
-    var inkRowIndex = 0;
-    var inkRows = [];
-    var testInkLoaded = false;
+  //variables
+  var gestureClassifier = null;
+  var notationImages = new Object();
+  var isIphone = navigator.userAgent.indexOf('iPhone') >= 0 || navigator.userAgent.indexOf('iPad') >= 0;
+  var gestureClassifier = null;
+  var staffSize = 128;
+  var advancedOptionsShown = false;
+  var db = new CouchDB('quil');
+  var inkRowIndex = 0;
+  var inkRows = [];
+  var testInkLoaded = false;
   
-    function handleOnLoad()
-    {        
+  function handleOnLoad()
+  {        
         var handleCanvasLoad = function(canvasDraw)
         {
             //canvasDraw.setScale(globalScale);
             //drawInkColorPalette();
         }
-        //        alert(globalScale);
+//        alert(globalScale);
         
         staffMarginLeft = 10;
         staffMarginTop = 100;
         staffOffsetPoint = new Point(staffMarginLeft, staffMarginTop)
         gestureClassifier = new GestureClassifier(handleCanvasLoad, staffSize, staffOffsetPoint);
        
-        /*TODO: uncomment
+        
         var staffRange = document.getElementById("staffSizeRange");
         staffRange.min = Staff.STAFF_SIZES[0];
         staffRange.max = Staff.STAFF_SIZES[Staff.STAFF_SIZES.length - 1];
         staffRange.value = staffSize;  
 
-        */
+        
         //show testing options
         if (DEBUG_LEVEL > 0)
         {
             document.getElementById("testingOptions").style.visibility = "visible";
         }
-    }  
+  }  
   
-    /*function changeInkColor()
+    function changeInkColor()
     {
         var r = document.getElementById("inkColorRed").value;
         var g = document.getElementById("inkColorGreen").value;
@@ -134,9 +197,9 @@
         
         gestureClassifier.getCanvasDraw().getPencil().setInkColor(r, g, b, a);
         drawInkColorPalette();
-    }*/
+    }
     
-    /*function drawInkColorPalette()
+    function drawInkColorPalette()
     {
         var paletteCanvas = document.getElementById("inkColorCanvas");
         if (paletteCanvas)
@@ -146,9 +209,9 @@
             paletteContext.fillStyle = gestureClassifier.getCanvasDraw().getPencil().getInkColor();
             paletteContext.fillRect(0, 0, paletteCanvas.width, paletteCanvas.height);
         }    
-    }*/
+    }
     
-    /*function showHideAdvancedOptions()
+    function showHideAdvancedOptions()
     {
         advancedOptionsShown = !advancedOptionsShown;
 
@@ -163,11 +226,11 @@
             document.getElementById("showHideAdvancedOptionsLink").innerHTML = "more options &hellip;";
         }
         
-    }*/
+    }
     
     function clearAll()
     {
-        //        var confirmation = confirm("Are you sure you want clear the page?");
+//        var confirmation = confirm("Are you sure you want clear the page?");
         if (true)
         {
             gestureClassifier.getCanvasDraw().getPencil().clearAll();    
@@ -175,7 +238,7 @@
         
         return false;
     }
-/*
+
     function loadInk()
     {    
         inkRows = db.view("ink/all").rows;
@@ -183,7 +246,7 @@
         testInkLoaded = true;
         displayInk();
     }
-    *//*
+
     function nextInk()
     {
         if (!testInkLoaded)
@@ -199,7 +262,7 @@
         }
         displayInk();
     }
-    *//*
+    
     function prevInk()
     {
         if (!testInkLoaded)
@@ -214,7 +277,7 @@
         }
         displayInk();        
     }
-    *//*
+    
     function displayInk()
     {    
         //update user feedback
@@ -241,10 +304,10 @@
             setTimeout(displayInk, INK_PLAYBACK_INTERVAL_MS);
         }
     }
-    */
+
     //test ink scaling and registration by cycling through all ink and attempt to classify it against itself
     //TODO: have an automated pass/fail metric for this
-  /*  function selfInkTest()
+    function selfInkTest()
     {
         //cycle through scales 
         for (var i = Staff.STAFF_SIZES.length; i > 0; i --)
@@ -272,7 +335,7 @@
         }
         
     }
-    *//*
+    
     function autoPlayTests()
     {
         return document.getElementById("autoplayCheckbox").checked;
@@ -280,71 +343,73 @@
     function useAutoLearn()
     {
         return document.getElementById("autolearnCheckbox").checked;
-    }*/
+    }
     function useScaleTestMode()
     {
-        //return document.getElementById("scaleTestModeCheckbox").checked;       TODO: uncomment 
+        return document.getElementById("scaleTestModeCheckbox").checked;        
     }
     
+    -->
     </script>
 
     </head>
     <body onload="handleOnLoad();">
-      <div class="container_12">
-        <div class="grid_12">
-          <h1 class="orange">NoteKnit!</h1>
-          <p>Drag &amp; drop notes to lines. Doubleclick to remove. Click "Knit!" to draw some notes. In the textarea - write using our knitting syntax.</p>
-        </div>
-        <div class="clear"></div>
-        <div class="grid_3">
-            <div class="type_box">
-              <h4>Drag & drop</h4>
-              <div id="notebox">
-              <div id="mover"></div>
-              <div class="note"><img src="img/1.png" ></div>
-              </div>
-            </div>
-            <div class="type_box">
-            <h4>Stylus mode!</h4>
-            <input type="button" id="knit-button" value="Knit!" />
-            </div> 
-            <div class="type_box">
-            <h4>Parse from Nokia</h4>
-              <textarea id="textarea" placeholder="write some notes here!"></textarea>
-              <input type="button" id="textarea-button" value="parse this song">
-            </div> 
-        </div>
-        <div class="grid_9" id="maincontain">
-          <div id="knit">
+        <div id="container">
             <canvas id="canvasView" width="1000" height="392"></canvas>
             <canvas id="canvas1" width="300" height="340"></canvas>
             <canvas id="canvas2" width="300" height="340"></canvas>
-          </div>
-          <div class="dest-cont">
-          
-          <div class="dest">
-          </div>
-          <div class="dest">
-          </div>
-          <div class="dest">
-          </div>
-          <div class="dest">
-          </div>
-          <div class="dest">
-          </div>
-  
-          </div>
         </div>
-      </div>
-      <div id="noteblock">
-      </div>
-       
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <!--<script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-            s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>-->
-    </body>
-</html>
+        <div id="controls">
+            <form id="options">        
+<!--                <input type="button" onclick="gestureClassifier.getCanvasDraw().getPencil().extendCanvas(60);" value="extend"/> -->
+                <img src="./quil_files/icon_sharp_handwritten.png" width="11" height="20" alt="handwritten">
+                <input type="checkbox" onclick="gestureClassifier.getCanvasDraw().getPencil().toggleShowInk();" value="show ink?" checked="true">
+                &nbsp;               &nbsp;               &nbsp;               &nbsp;               &nbsp;               &nbsp;               &nbsp;
+                <img src="./quil_files/icon_sharp_typeset.png" width="8" height="20" alt="typeset">
+                <input type="checkbox" onclick="gestureClassifier.getCanvasDraw().getPencil().toggleShowSymbols();" value="show symbols?" checked="true">
+                <br><br>
+                
+                <input type="button" onclick="gestureClassifier.getCanvasDraw().getPencil().redrawCanvas(-1);" value="-">
+                <input id="staffSizeRange" type="range" step="1" min="11" max="160" value="128" onchange="gestureClassifier.getCanvasDraw().getPencil().resizeToNearestStaffSize(this.value);" size="8">
+                <input type="button" onclick="gestureClassifier.getCanvasDraw().getPencil().redrawCanvas(1);" value="+">
+                <!-- TODO: display these conditionally as a backup when range isn't available?  Update number in slider for browsers without range type form elements-->
+                <br>
+                <!--advanced options -->
+                <br>
+                <a href="http://iquil.com/#" onclick="showHideAdvancedOptions();" id="showHideAdvancedOptionsLink">more options …</a>
+                <div id="advancedOptions">                
+                    <input type="button" onclick="clearAll();" value="clear all"><br>
+                    Ink Color<br>
+                    Red<input id="inkColorRed" type="range" step="1" min="0" max="255" value="0" onchange="changeInkColor();" size="8">
+                    <br>
+                    Green<input id="inkColorGreen" type="range" step="1" min="0" max="255" value="0" onchange="changeInkColor();" size="8">
+                    <br>
+                    Blue<input id="inkColorBlue" type="range" step="1" min="0" max="255" value="0" onchange="changeInkColor();" size="8">
+                    <br>
+                    Opacity<input id="inkAlpha" type="range" step="1" min="0" max="100" value="100" onchange="changeInkColor();" size="8">
+                    <br>
+                    <canvas id="inkColorCanvas" width="20" height="20"></canvas>
+                </div>
+                <div id="testingOptions">
+                    <input type="button" onclick="loadInk();" value="load ink">
+                    <input type="button" onclick="saveInk();" value="save ink">
+                    <input type="checkbox" value="autoplay tests" checked="true" id="autoplayCheckbox">autoplay
+                    <input type="button" onclick="prevInk();" value="previous">
+                    <span id="testStep"></span>
+                    <input type="button" onclick="nextInk();" value="next">
+                    <br>
+                    <input type="checkbox" value="autolearn" checked="" id="autolearnCheckbox">autolearn from user feeback                    
+                    <br>
+                    <input type="checkbox" value="scaleTestMode" id="scaleTestModeCheckbox">scale test mode
+                    <br>
+                    <input type="button" onclick="selfInkTest();" value="selfInkTest">
+                    <br>
+                    previous snapshot image:
+                    <br>
+                    <div id="testImage" height="300" width="1000"></div>
+                </div>
+            </form>
+        </div>
+        <canvas id="symbolOptions" height="60" width="170"></canvas>
+    
+</body></html>
