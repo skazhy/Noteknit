@@ -109,12 +109,20 @@ h2.note {
 }
 
 #knit {
+    display: none;
     position: absolute;
     z-index:20;
 }
 
-
-
+canvas {
+    width: 700px;
+}
+.orange {
+    color: #ff613e;
+}
+h2 {
+    display: inline;
+}
 
 
 /* ==========================================================================

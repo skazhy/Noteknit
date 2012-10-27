@@ -28,7 +28,15 @@ $(function() {
     }
   }
     $("#knit-button").click(function() {
-        $("canvas").bind("click", knit);
+        if($(this).hasClass("knitting")) {
+            $(this).val("Knit!");
+            $("canvas").unbind("click");
+        } else {
+            $(this).val("Stop knitting pls");
+            $("canvas").bind("mousedown", knit);
+        }
+        $("#knit").toggle();
+        $(this).toggleClass("knitting");
     });
     var Note = Backbone.Model.extend({
     });
@@ -66,11 +74,7 @@ $(function() {
          song.outputCode();
      });
      note.set("el", copy);
-<<<<<<< HEAD
-     copy.draggable({ revert: "invalid", grid: [10, 10] }).bind("dblclick", function() { 
-=======
-     copy.draggable({ revert: "invalid", grid: [11, 20] }).bind("dblclick", function() { 
->>>>>>> 6cb32b68490fdb33928163e090065e6a011cfc15
+     copy.draggable({ revert: "invalid", grid: [40, 10] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
