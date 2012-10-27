@@ -107,8 +107,17 @@ h2.note {
     background-color: #ddd;
 }
 
-
-
+#knit {
+    position: absolute;
+    top: 50px;
+    z-index:20;
+}
+#dest {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    width: 80%;
+}
 
 
 
