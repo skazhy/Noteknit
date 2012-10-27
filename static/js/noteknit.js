@@ -42,9 +42,7 @@ $(function() {
           this.preload();
           var me = this;
            function note_play() {
-            console.log(1);
             if (played < me.length) {
-                console.log(me.at(played));
                 if (me.at(played).playable()) {
                     me.at(played).play();
                 }
