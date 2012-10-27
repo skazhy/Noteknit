@@ -33,12 +33,13 @@ $(function() {
          song.outputCode();
      });
      note.set("el", copy);
-     song.add(note);
      copy.draggable({ revert: "invalid", grid: [10, 20] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
      $(this).after(copy);
+     
+     song.add(note);
     });
     
     $('.dest').droppable({ });
