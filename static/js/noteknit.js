@@ -28,7 +28,7 @@ $(function() {
       context.stroke();
     }
   }
-    $("#knit-button").click(function() {
+    /*$("#knit-button").click(function() {
         if($(this).hasClass("knitting")) {
             $(this).val("Knit!");
             $("canvas").unbind("click");
@@ -38,7 +38,7 @@ $(function() {
         }
         $("#knit").toggle();
         $(this).toggleClass("knitting");
-    });
+    });*/
     var Note = Backbone.Model.extend({
     });
 

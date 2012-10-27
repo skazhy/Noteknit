@@ -388,7 +388,7 @@ function Staff(marginTopLeftPoint)
     {
         this.startLayout(context, inkStyle);
  
-        switch (symbolString)
+        /*switch (symbolString)
         {            
             case "clef_bass":
                 this.drawBassClef(context, anchorPoint);
@@ -490,7 +490,109 @@ function Staff(marginTopLeftPoint)
                 this.drawTimeSignatureNumber(context, anchorPoint, 9);
                 break;
                 
-        }   
+        }   */
+        switch (symbolString) {
+            case "clef_bass":
+                this.drawBassClef(context, anchorPoint);
+                break;
+            case "clef_treble":
+                this.drawTrebleClef(context, anchorPoint);
+                break;
+            case "accidental_flat":
+                this.drawFlat(context, anchorPoint);
+                break;
+            case "accidental_sharp":
+                this.drawSharp(context, anchorPoint);
+                break;
+            case "note_16th_stem_down":
+                this.draw16thNoteStemDown(context, anchorPoint);
+                break;
+            case "note_16th_stem_up":
+                this.draw16thNoteStemUp(context, anchorPoint);
+                break;
+            case "note_32nd_stem_down":
+                this.draw32ndNoteStemDown(context, anchorPoint);
+                break;
+            case "note_32nd_stem_up":
+                this.draw32ndNoteStemUp(context, anchorPoint);
+                break;
+            case "note_eighth_stem_down":
+                this.drawEighthNoteStemDown(context, anchorPoint);
+                break;
+            case "note_eighth_stem_up":
+                this.drawEighthNoteStemUp(context, anchorPoint);
+                break;
+            case "note_half_stem_down":
+                this.drawHalfNoteStemDown(context, anchorPoint);
+                break;
+            case "note_half_stem_up":
+                this.drawHalfNoteStemUp(context, anchorPoint);
+                break;
+            case "note_quarter_stem_down":
+                this.drawQuarterNoteStemDown(context, anchorPoint);
+                break;
+            case "note_quarter_stem_up":
+                this.drawQuarterNoteStemUp(context, anchorPoint);
+                break;
+            case "note_whole":
+                this.drawWholeNote(context, anchorPoint);
+                break;
+            case "rest_16th":
+                this.draw16thRest(context, anchorPoint);
+                break;
+            case "rest_eighth":
+                this.drawEighthRest(context, anchorPoint);
+                break;
+            case "rest_half":
+                this.drawHalfRest(context, anchorPoint);
+                break;
+            case "rest_quarter":
+                this.drawQuarterRest(context, anchorPoint);
+                break;
+            case "rest_whole":
+                this.drawWholeRest(context, anchorPoint);
+                break;
+            case "augmentation_dot":
+                this.drawAugmentationDot(context, anchorPoint);
+                break;
+            case "leger_line":
+                this.drawLegerLine(context, anchorPoint);
+                break;
+            case "accidental_natural":
+                this.drawNatural(context, anchorPoint);
+                break;
+            case "barline":
+                this.drawBarline(context, anchorPoint);
+                break;
+            case "time_signature_1":
+                this.drawTimeSignatureNumber(context, anchorPoint, 1);
+                break;
+            case "time_signature_2":
+                this.drawTimeSignatureNumber(context, anchorPoint, 2);
+                break;
+            case "time_signature_3":
+                this.drawTimeSignatureNumber(context, anchorPoint, 3);
+                break;
+            case "time_signature_4":
+                this.drawTimeSignatureNumber(context, anchorPoint, 4);
+                break;
+            case "time_signature_5":
+                this.drawTimeSignatureNumber(context, anchorPoint, 5);
+                break;
+            case "time_signature_6":
+                this.drawTimeSignatureNumber(context, anchorPoint, 6);
+                break;
+            case "time_signature_7":
+                this.drawTimeSignatureNumber(context, anchorPoint, 7);
+                break;
+            case "time_signature_8":
+                this.drawTimeSignatureNumber(context, anchorPoint, 8);
+                break;
+            case "time_signature_9":
+                this.drawTimeSignatureNumber(context, anchorPoint, 9);
+                break;
+
+        }
         this.endLayout(context);
     
     }

@@ -20,8 +20,276 @@
         <script type="text/javascript" charset="utf-8" src="js/underscore-min.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/backbone-min.js"></script>
         <script type="text/javascript" charset="utf-8" src="js/noteknit.js"></script>
+
+
+        <!--*******draw input********-->
+    <!-- utilities -->
+    <script type="text/javascript" src="./quil_files/Utils.js"></script>
+    <script type="text/javascript" src="./quil_files/XmlHttpRequest.js"></script>
+    <script type="text/javascript" src="./quil_files/Json.js"></script>
+    <script type="text/javascript" src="./quil_files/CouchServer.js"></script>
+    <script type="text/javascript" src="./quil_files/couch.js"></script>
+    
+    <!-- geometry -->
+    <script type="text/javascript" src="./quil_files/Point.js"></script>
+    <script type="text/javascript" src="./quil_files/Line.js"></script>
+    <script type="text/javascript" src="./quil_files/Rectangle.js"></script>
+    <script type="text/javascript" src="./quil_files/Polygon.js"></script>
+    <script type="text/javascript" src="./quil_files/PolygonIntersect.js"></script>
+
+    <!-- drawing -->
+    <script type="text/javascript" src="./quil_files/Ink.js"></script>
+    <script type="text/javascript" src="./quil_files/Pencil.js"></script>
+    <script type="text/javascript" src="./quil_files/CanvasDraw.js"></script>
+
+    <!-- gesture recognition -->
+    <script type="text/javascript" src="./quil_files/Gesture.js"></script>
+    <script type="text/javascript" src="./quil_files/Feature.js"></script>
+    <script type="text/javascript" src="./quil_files/Match.js"></script>
+    <script type="text/javascript" src="./quil_files/GestureClassifier.js"></script>
+    <script type="text/javascript" src="./quil_files/SymbolOptions.js"></script>
+
+    <!-- language model -->
+    <script type="text/javascript" src="./quil_files/Ngram.js"></script>
+    <script type="text/javascript" src="./quil_files/Bigram.js"></script>
+    <script type="text/javascript" src="./quil_files/Language.js"></script>
+
+        <script type="text/javascript">
+            //define global fetamap var before loading the lilypond feta font maps
+            //this is really a C++ file, but will interpret fine as javascript 
+            //so long as the var _fetaMap is defined first as an object
+            var _fetaMap = new Object();
+            //load feta (emmantaler) character mappings
+    </script>
+    <script type="text/javascript" src="./quil_files/fetaList.js"></script>
+    <script type="text/javascript" src="./quil_files/Rastral.js"></script>
+    <script type="text/javascript" src="./quil_files/Symbol.js"></script>
+    <script type="text/javascript" src="./quil_files/Staff.js"></script>
+    <script type="text/javascript" src="./quil_files/Clef.js"></script>
+
+        <script type="text/javascript">
+  <!--
+
+    //globals
+  
+    function Quil()
+    {
+  
+  
+    }
+  
+    //constants
+  const IMAGE_PATH = "media/";
+  const MAIN_CONTAINER_ID = "container";
+  const DEBUG_LEVEL = 0;
+  const INK_PLAYBACK_INTERVAL_MS = 3000;
+  const CURRENT_INK_VERSION = 0.1;
+
+    //variables
+    var gestureClassifier = null;
+    var notationImages = new Object();
+    var isIphone = navigator.userAgent.indexOf('iPhone') >= 0 || navigator.userAgent.indexOf('iPad') >= 0;
+    var gestureClassifier = null;
+    var staffSize = 128;
+    var advancedOptionsShown = false;
+    var db = new CouchDB('quil');
+    var inkRowIndex = 0;
+    var inkRows = [];
+    var testInkLoaded = false;
+  
+    function handleOnLoad()
+    {        
+        var handleCanvasLoad = function(canvasDraw)
+        {
+            //canvasDraw.setScale(globalScale);
+            //drawInkColorPalette();
+        }
+        //        alert(globalScale);
+        
+        staffMarginLeft = 10;
+        staffMarginTop = 100;
+        staffOffsetPoint = new Point(staffMarginLeft, staffMarginTop)
+        gestureClassifier = new GestureClassifier(handleCanvasLoad, staffSize, staffOffsetPoint);
+       
+        /*TODO: uncomment
+        var staffRange = document.getElementById("staffSizeRange");
+        staffRange.min = Staff.STAFF_SIZES[0];
+        staffRange.max = Staff.STAFF_SIZES[Staff.STAFF_SIZES.length - 1];
+        staffRange.value = staffSize;  
+
+        */
+        //show testing options
+        if (DEBUG_LEVEL > 0)
+        {
+            document.getElementById("testingOptions").style.visibility = "visible";
+        }
+    }  
+  
+    function changeInkColor()
+    {
+        var r = document.getElementById("inkColorRed").value;
+        var g = document.getElementById("inkColorGreen").value;
+        var b = document.getElementById("inkColorBlue").value;
+        var a = document.getElementById("inkAlpha").value / 100;
+        
+        gestureClassifier.getCanvasDraw().getPencil().setInkColor(r, g, b, a);
+        drawInkColorPalette();
+    }
+    
+    function drawInkColorPalette()
+    {
+        var paletteCanvas = document.getElementById("inkColorCanvas");
+        if (paletteCanvas)
+        {
+            Utils.clearCanvas(paletteCanvas);
+            var paletteContext = paletteCanvas.getContext("2d");
+            paletteContext.fillStyle = gestureClassifier.getCanvasDraw().getPencil().getInkColor();
+            paletteContext.fillRect(0, 0, paletteCanvas.width, paletteCanvas.height);
+        }    
+    }
+    
+    function showHideAdvancedOptions()
+    {
+        advancedOptionsShown = !advancedOptionsShown;
+
+        if (advancedOptionsShown)
+        {
+            document.getElementById("advancedOptions").style.visibility = "visible";
+            document.getElementById("showHideAdvancedOptionsLink").innerHTML = "less options";
+        }
+        else
+        {
+            document.getElementById("advancedOptions").style.visibility = "hidden";        
+            document.getElementById("showHideAdvancedOptionsLink").innerHTML = "more options &hellip;";
+        }
+        
+    }
+    
+    function clearAll()
+    {
+        //        var confirmation = confirm("Are you sure you want clear the page?");
+        if (true)
+        {
+            gestureClassifier.getCanvasDraw().getPencil().clearAll();    
+        }
+        
+        return false;
+    }
+
+    function loadInk()
+    {    
+        inkRows = db.view("ink/all").rows;
+        inkRowIndex = 0;
+        testInkLoaded = true;
+        displayInk();
+    }
+
+    function nextInk()
+    {
+        if (!testInkLoaded)
+        {
+            loadInk();
+            return;
+        }
+
+        inkRowIndex ++;
+        if (inkRowIndex >= inkRows.length)
+        {
+            inkRowIndex = inkRows.length - 1;
+        }
+        displayInk();
+    }
+    
+    function prevInk()
+    {
+        if (!testInkLoaded)
+        {
+            loadInk();
+            return;
+        }    
+        inkRowIndex --;
+        if (inkRowIndex <= 0)
+        {
+            inkRowIndex = 0;
+        }
+        displayInk();        
+    }
+    
+    function displayInk()
+    {    
+        //update user feedback
+        var testStep = document.getElementById("testStep");
+        testStep.innerHTML = (inkRowIndex + 1) + " of " + inkRows.length + " " + inkRows[inkRowIndex].value._id;
+        
+        var inkRow = inkRows[inkRowIndex];        
+        gestureClassifier.getCanvasDraw().getPencil().clearAll();
+        gestureClassifier.getCanvasDraw().getPencil().replayInk(inkRow.value);
+
+        //display previous image
+        var testImageDiv = document.getElementById("testImage");
+        var testImage = new Image();
+        if ("imageData" in inkRows[inkRowIndex].value)
+        {
+            testImage.src = inkRows[inkRowIndex].value.imageData;
+        }//otherwise display blank image
+        
+        testImageDiv.innerHTML = "";
+        testImageDiv.appendChild(testImage);
+        if (autoPlayTests() && inkRowIndex < inkRows.length - 1)
+        {
+            inkRowIndex ++;
+            setTimeout(displayInk, INK_PLAYBACK_INTERVAL_MS);
+        }
+    }
+
+    //test ink scaling and registration by cycling through all ink and attempt to classify it against itself
+    //TODO: have an automated pass/fail metric for this
+    function selfInkTest()
+    {
+        //cycle through scales 
+        for (var i = Staff.STAFF_SIZES.length; i > 0; i --)
+        {
+            gestureClassifier.getCanvasDraw().getPencil().resizeToNearestStaffSize(Staff.STAFF_SIZES[i]);
+            gestureClassifier.selfMatch(Staff.STAFF_SIZES[i]);
+        }
+        
+    }
+    function saveInk()
+    {
+        var ink = gestureClassifier.getCanvasDraw().getPencil().ink.serialize();
+        var recognizedSymbols = gestureClassifier.getCanvasDraw().getStaff().serializeSymbols();
+        //todo, add bitmap snapshot of recognition
+        var c = gestureClassifier.getCanvasDraw().getCanvas();
+        var imageData =  c.toDataURL();
+        
+        //console.log(imageData);
+        ink.imageData = imageData;
+        ink.recognizedSymbols = recognizedSymbols;
+        ink.version = CURRENT_INK_VERSION;
+        if (ink)
+        {
+            db.save(ink);
+        }
+        
+    }
+    
+    function autoPlayTests()
+    {
+        return document.getElementById("autoplayCheckbox").checked;
+    }
+    function useAutoLearn()
+    {
+        return document.getElementById("autolearnCheckbox").checked;
+    }
+    function useScaleTestMode()
+    {
+        //return document.getElementById("scaleTestModeCheckbox").checked;       TODO: uncomment 
+    }
+    
+    </script>
+
     </head>
-    <body>
+    <body onload="handleOnLoad();">
       <div class="container_12">
         <div class="grid_12">
           <h1 class="orange">NoteKnit!</h1>
@@ -54,7 +322,9 @@
         </div>
         <div class="grid_9" id="maincontain">
           <div id="knit">
-            <canvas></canvas>
+            <canvas id="canvasView" width="1000" height="392"></canvas>
+            <canvas id="canvas1" width="300" height="340"></canvas>
+            <canvas id="canvas2" width="300" height="340"></canvas>
           </div>
           <div class="dest-cont">
           

@@ -57,7 +57,7 @@ function CanvasDraw(trainingCallback, staffSize, staffOffsetPoint)
         
         _pencil = new Pencil(this.trainingCallback, _context, _staff);
         
-        //iphone
+        //iphone TODO: check if other mobile browser
         if (isIphone)
         {			
 			document.body.addEventListener("touchmove", function(e) {
