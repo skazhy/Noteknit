@@ -118,6 +118,7 @@ canvas {
     color: #ff613e;
 }
 h2 {
+    cursor: pointer;
     display: inline;
 }
 

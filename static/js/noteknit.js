@@ -82,6 +82,9 @@ $(function() {
      song.outputCode();
      
     });
+    $("#save-button").click(function() {
+        song.outputCode();
+    });
     
     $('.dest').droppable({ });
 });
