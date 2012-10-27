@@ -1,6 +1,7 @@
 $(function() {
   var knitting_started = false;
   var context = $("canvas")[0].getContext('2d');
+  
   function knit(ev) {
     var x, y;
     console.log(ev);
@@ -50,12 +51,30 @@ $(function() {
             var sortedMap = _.sortBy(map, function(m) { return m.left });
             $("#output").text(_.map(sortedMap, function(m) { return Math.round(m.top) }));
             return _.map(sortedMap, function(m) { return Math.round(m.top) });
+        },
+        preload: function() {
+            this.each(function(note) {
+                if(!$("#audio" + note.get("tone")).length) {
+                    $('<audio>', {src: 'mp3/'+ note.get("tone").replace("-","/")+'.mp3', id: "audio"+note.get("tone")}).appendTo("#noteblock");
+                }
+            });
+        },
+        play: function() {
+            this.preload();
+            this.each(function(tone) {
+                var tempo = tone.get("tone").split("-");
+                var tempo = parseInt(tempo[1]); 
+                console.log(tempo);
+                setTimeout(function() { 
+                    $("#audio"+tone.get("tone")).get(0).play();
+                 }, (2000/ tempo));
+            });
         }
     });
     
     var song = new Song();
     song.on("add", function() {
-        this.outputCode();
+        //this.outputCode();
     });
     song.on("destroy", function(mod) {
         this.outputCode();
@@ -80,7 +99,7 @@ $(function() {
          song.outputCode();
      });
      note.set("el", copy);
-     copy.draggable({ revert: "invalid", grid: [40, 10] }).bind("dblclick", function() { 
+     copy.draggable({ revert: "invalid", grid: [40, 15] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
@@ -95,9 +114,15 @@ $(function() {
     });
 
     $("#textarea-button").click(function() {
+        //song.reset();
         var ta = $("#textarea").val();
-        console.log(ta.split(" "));
-        song.reset();
+        var tones = ta.split(" ");
+        for(var i=0;  i < tones.length; i++) {
+            if (!tones[i].length) continue;
+            var n = new Note({tone: tones[i].replace("/","-")});
+            song.add(n);
+        }
+        song.play();
     });
     
     $('.dest').droppable({ });

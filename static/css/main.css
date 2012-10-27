@@ -99,8 +99,8 @@ h2.note {
 }
 .dest {
     height: 35px;
-    min-height: 35px;
-    border-bottom: 1px solid black;
+    min-height: 30px;
+    border-top: 5px solid black;
     /* background-image: url('../img/line_bg.png'); */
     width: 100%;
 }
