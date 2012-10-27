@@ -93,11 +93,14 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-
+h2.note {
+    margin: 0px;
+    padding: 0px;
+}
 .dest {
-    height: 20px;
+    height: 125px;
     min-height: 20px;
-    border-bottom: 1px solid black;
+    background-image: url('../img/line_bg.png');
     width: 100%;
 }
 #output {
