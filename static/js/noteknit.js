@@ -28,7 +28,15 @@ $(function() {
     }
   }
     $("#knit-button").click(function() {
-        $("canvas").bind("click", knit);
+        if($(this).hasClass("knitting")) {
+            $(this).val("Knit!");
+            $("canvas").unbind("click");
+        } else {
+            $(this).val("Stop knitting pls");
+            $("canvas").bind("mousedown", knit);
+        }
+        $("#knit").toggle();
+        $(this).toggleClass("knitting");
     });
     var Note = Backbone.Model.extend({
     });

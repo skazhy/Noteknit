@@ -106,10 +106,14 @@ textarea {
 }
 
 #knit {
+    display: none;
     position: absolute;
     z-index:20;
 }
 
+canvas {
+    width: 700px;
+}
 
 
 
