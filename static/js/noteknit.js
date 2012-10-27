@@ -7,7 +7,9 @@ $(function() {
         url: '/song',
         model: Note,
         outputCode: function() {
-            console.log(this.map(function(e) { return e.get("el").position(); }));
+            var map = this.map(function(e) { return e.get("el").position(); });
+            var sortedMap = _.sortBy(map, function(m) { return m.left });
+            $("#output").text(_.map(sortedMap, function(m) { return Math.round(m.top) }));
         }
     });
     
