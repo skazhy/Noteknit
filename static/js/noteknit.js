@@ -33,7 +33,7 @@ $(function() {
          song.outputCode();
      });
      note.set("el", copy);
-     copy.draggable({ revert: "invalid", grid: [10, 20] }).bind("dblclick", function() { 
+     copy.draggable({ revert: "invalid", grid: [10, 10] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
