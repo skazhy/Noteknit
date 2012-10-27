@@ -74,7 +74,7 @@ $(function() {
          song.outputCode();
      });
      note.set("el", copy);
-     copy.draggable({ revert: "invalid", grid: [11, 20] }).bind("dblclick", function() { 
+     copy.draggable({ revert: "invalid", grid: [40, 10] }).bind("dblclick", function() { 
          song.getByCid($(this).attr("id")).destroy();
          $(this).remove(); });
 
