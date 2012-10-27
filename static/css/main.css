@@ -98,9 +98,10 @@ h2.note {
     padding: 0px;
 }
 .dest {
-    height: 125px;
-    min-height: 20px;
-    background-image: url('../img/line_bg.png');
+    height: 35px;
+    min-height: 35px;
+    border-bottom: 1px solid black;
+    /* background-image: url('../img/line_bg.png'); */
     width: 100%;
 }
 #output {
@@ -121,9 +122,14 @@ canvas {
     color: #ff613e;
 }
 h2 {
+    cursor: pointer;
     display: inline;
 }
 
+.type_box {
+    margin-bottom: 2px;
+    background-color: #ddd;
+}
 
 /* ==========================================================================
    Helper classes

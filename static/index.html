@@ -25,24 +25,37 @@
       <div class="container_12">
         <div class="grid_12">
           <h1 class="orange">NoteKnit!</h1>
-          <p>Drag &amp; drop notes to lines. Doubleclick to remove. Click "Knit!" to draw some notes.</p>
+          <p>Drag &amp; drop notes to lines. Doubleclick to remove. Click "Knit!" to draw some notes. In the textarea - write using our knitting syntax.</p>
         </div>
         <div class="clear"></div>
         <div class="grid_3">
-          <div id="notebox">
-            <div id="mover"></div>
-            <h2 class="note">P</h2>
-            <h2 class="note">Ь</h2>
-          </div>
-          <input type="button" id="knit-button" value="Knit!" />
-          <div id="output"></div>
+            <div class="type_box">
+              <h4>Drag & drop</h4>
+              <div id="notebox">
+              <div id="mover"></div>
+              <h2 class="note">P</h2>
+              <h2 class="note">Ь</h2>
+              <h2 class="note">П</h2>
+              <h2 class="note">Ш</h2>
+              <h2 class="note">o</h2>
+              </div>
+            </div>
+            <div class="type_box">
+            <h4>Stylus mode!</h4>
+            <input type="button" id="knit-button" value="Knit!" />
+            </div> 
+            <div class="type_box">
+            <h4>Parse from Nokia</h4>
+              <textarea id="textarea" placeholder="write some notes here!"></textarea>
+              <input type="button" id="textarea-button" value="parse this song">
+              <input type="button" id="knit-button" value="Knit!" />
+            </div> 
         </div>
         <div class="grid_9" id="maincontain">
           <div id="knit">
             <canvas></canvas>
           </div>
-
-          <div id="dest">
+          <div class="dest-cont">
           
           <div class="dest">
           </div>
@@ -56,13 +69,8 @@
           </div>
   
           </div>
-        <div class="dest">
         </div>
-        </div>
-      
       </div>
-
-
        
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
