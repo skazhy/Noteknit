@@ -439,7 +439,7 @@ function Pencil(trainingCallback, context, staff)
             targetPolygon.points = staff.symbols[i].getBoundingBox(context, staff).getPoints();
             
             //concatenate all ink points for this gesture
-            targetPolygon.points =  targetPolygon.points.concat(self.ink.gestures[i].bagOfPoints());
+            targetPolygon.points = targetPolygon.points.concat(self.ink.gestures[i].bagOfPoints());
             
             //get convex hull of all points   
             targetPolygon.sortPoints();

@@ -125,7 +125,7 @@
         }
     }  
   
-    function changeInkColor()
+    /*function changeInkColor()
     {
         var r = document.getElementById("inkColorRed").value;
         var g = document.getElementById("inkColorGreen").value;
@@ -134,9 +134,9 @@
         
         gestureClassifier.getCanvasDraw().getPencil().setInkColor(r, g, b, a);
         drawInkColorPalette();
-    }
+    }*/
     
-    function drawInkColorPalette()
+    /*function drawInkColorPalette()
     {
         var paletteCanvas = document.getElementById("inkColorCanvas");
         if (paletteCanvas)
@@ -146,9 +146,9 @@
             paletteContext.fillStyle = gestureClassifier.getCanvasDraw().getPencil().getInkColor();
             paletteContext.fillRect(0, 0, paletteCanvas.width, paletteCanvas.height);
         }    
-    }
+    }*/
     
-    function showHideAdvancedOptions()
+    /*function showHideAdvancedOptions()
     {
         advancedOptionsShown = !advancedOptionsShown;
 
@@ -163,7 +163,7 @@
             document.getElementById("showHideAdvancedOptionsLink").innerHTML = "more options &hellip;";
         }
         
-    }
+    }*/
     
     function clearAll()
     {
@@ -175,7 +175,7 @@
         
         return false;
     }
-
+/*
     function loadInk()
     {    
         inkRows = db.view("ink/all").rows;
@@ -183,7 +183,7 @@
         testInkLoaded = true;
         displayInk();
     }
-
+    *//*
     function nextInk()
     {
         if (!testInkLoaded)
@@ -199,7 +199,7 @@
         }
         displayInk();
     }
-    
+    *//*
     function prevInk()
     {
         if (!testInkLoaded)
@@ -214,7 +214,7 @@
         }
         displayInk();        
     }
-    
+    *//*
     function displayInk()
     {    
         //update user feedback
@@ -241,10 +241,10 @@
             setTimeout(displayInk, INK_PLAYBACK_INTERVAL_MS);
         }
     }
-
+    */
     //test ink scaling and registration by cycling through all ink and attempt to classify it against itself
     //TODO: have an automated pass/fail metric for this
-    function selfInkTest()
+  /*  function selfInkTest()
     {
         //cycle through scales 
         for (var i = Staff.STAFF_SIZES.length; i > 0; i --)
@@ -272,7 +272,7 @@
         }
         
     }
-    
+    *//*
     function autoPlayTests()
     {
         return document.getElementById("autoplayCheckbox").checked;
@@ -280,7 +280,7 @@
     function useAutoLearn()
     {
         return document.getElementById("autolearnCheckbox").checked;
-    }
+    }*/
     function useScaleTestMode()
     {
         //return document.getElementById("scaleTestModeCheckbox").checked;       TODO: uncomment 
@@ -346,11 +346,11 @@
       </div>
        
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
+        <!--<script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
-        </script>
+        </script>-->
     </body>
 </html>
