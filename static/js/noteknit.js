@@ -1,6 +1,6 @@
 $(function() {
   var knitting_started = false;
-  var context = $("canvas")[0].getContext('2d');
+  //var context = $("canvas")[0].getContext('2d');
   
   var Note = Backbone.Model.extend({
       audio_id: function(lead){ return lead + "audio" + this.get("tone").replace("/","-"); },
@@ -8,8 +8,11 @@ $(function() {
       play: function() {
           $(this.audio_id("#"))[0].play();
       },
+      noteNum: function() {
+          return parseInt(this.get("tone").split("/")[1]);
+      },
       tempo: function() {
-        return Math.round(2000 / parseInt(this.get("tone").split("/")[1]));
+        return Math.round(2000 / this.noteNum());
       },
       playable: function() {
           return (this.get("tone").slice(0,1) != "z");
@@ -19,6 +22,30 @@ $(function() {
                var a = $('<audio>', {src: this.audio_path(), id: this.audio_id("")});
                $("#noteblock").append(a);
             }
+      },
+      update: function(ev) {
+          console.log(ev);
+      },
+      img: function(incr) {
+        var copy = $(".k"+ this.noteNum()).clone();
+        copy.attr("id", this.cid);
+        copy.addClass("activeNote");
+        copy.clientX = 103;
+        //song.add(, {silent: true});
+     
+        this.set("el", copy);
+        var me = this;
+        copy.bind("dragstop", function(e) {
+            me.update(e.clientY);
+        });
+        copy.css({position: "absolute", left: incr, top: "70px"});
+        copy.position(100,0);
+        console.log(copy);
+        copy.draggable({ revert: "invalid", grid: [40, 15] }).bind("dblclick", function() { 
+            song.getByCid($(this).attr("id")).destroy();
+            $(this).remove(); });
+
+        $("#notebox").after(copy);
       }
   });
 
@@ -53,19 +80,24 @@ $(function() {
             }
         }
         note_play();
+      },
+      publish: function() {
+          var incr = 500;
+          this.each( function(el) {
+              el.img(incr);
+              incr += 80;
+          });
       }
   });
     
   var song = new Song();
   song.on("add", function() {
-      //this.outputCode();
   });
   song.on("destroy", function(mod) {
-      this.outputCode();
   });
   song.on("reset", function() { $(".activeNote").remove(); });
     
-  $("#notebox").draggable({ handle: "#mover" });
+   $("#notebox").draggable({ handle: "#mover" });
     $('.note').draggable({
         revert: "invalid",
         helper: "clone",
@@ -74,22 +106,24 @@ $(function() {
      note.on("destroy", function() {
      });
      var copy = $(ui.helper).clone();
-     copy.attr("id", note.cid);
+     copy.attr("id", this.cid);
      copy.addClass("activeNote");
      song.add(note, {silent: true});
      
-    copy.bind("dragstop", function() {
-        song.outputCode();
-    });
     note.set("el", copy);
+    copy.bind("dragstop", function(e) {
+        note.update(e.clientY);
+    });
+    note.update(event.clientY);
     copy.draggable({ revert: "invalid", grid: [40, 15] }).bind("dblclick", function() { 
         song.getByCid($(this).attr("id")).destroy();
         $(this).remove(); });
 
     $(this).after(copy);
-    song.outputCode();
     
-   });
+   }); 
+   
+   
    $("#save-button").click(function() {
        var map = song.outputCode();
        var name = $("#song-name").val();
@@ -106,6 +140,7 @@ $(function() {
             song.add(n);
         }
         song.play();
+        song.publish();
     });
     
     $('.dest').droppable({ });
