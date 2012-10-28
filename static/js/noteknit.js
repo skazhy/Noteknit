@@ -1,6 +1,14 @@
 $(function() {
   var knitting_started = false;
   //var context = $("canvas")[0].getContext('2d');
+  var scale = {
+      a: 355,
+      d: 366,
+      g: 376,
+      c: 386,
+      e: 345,
+      b: 334
+  }
   
   var Note = Backbone.Model.extend({
       audio_id: function(lead){ return lead + "audio" + this.get("tone").replace("/","-"); },
@@ -17,20 +25,37 @@ $(function() {
       playable: function() {
           return (this.get("tone").slice(0,1) != "z");
       },
+      scale: function() {
+          return this.get("tone").split("/")[0];
+      },
+      getTone: function() {
+          var ev = this.get("ev");
+          var alt = this.get("el").children("img").attr("alt");
+          var direction = alt.match(/([a-z]+)(\d+)/);
+          if(direction[1].length == 1) ev += 100;
+          ev += 252;
+          var me = this;
+          for(var property in scale) {
+            if (scale[property] - ev < 10) {
+                me.set({tone: property+"/"+direction[2]});
+                break;
+            }
+          }
+      },
       preload: function() {
+            if(!this.has("tone")) this.getTone();
             if(!$(this.audio_id("#")).length) {
                var a = $('<audio>', {src: this.audio_path(), id: this.audio_id("")});
                $("#noteblock").append(a);
             }
       },
       update: function(ev) {
-          console.log(ev);
+        this.set("ev", ev);
       },
       img: function(incr) {
-        var copy = $(".k"+ this.noteNum()).clone();
+        var copy = $(".k"+ this.noteNum()).first().clone();
         copy.attr("id", this.cid);
         copy.addClass("activeNote");
-        copy.clientX = 103;
         //song.add(, {silent: true});
      
         this.set("el", copy);
@@ -38,7 +63,8 @@ $(function() {
         copy.bind("dragstop", function(e) {
             me.update(e.clientY);
         });
-        copy.css({position: "absolute", left: incr, top: "70px"});
+
+        copy.css({position: "absolute", left: incr, top: scale[this.scale()]});
         copy.position(100,0);
         console.log(copy);
         copy.draggable({ revert: "invalid", grid: [40, 15] }).bind("dblclick", function() { 
@@ -131,12 +157,15 @@ $(function() {
     });
 
     $("#textarea-button").click(function() {
-        song.reset();
         var ta = $("#textarea").val();
+        if (ta.length) {
+            song.reset();
+        }
         var tones = ta.split(" ");
         for(var i=0;  i < tones.length; i++) {
             if (!tones[i].length) continue;
             var n = new Note({tone: tones[i]});
+            len++;
             song.add(n);
         }
         song.play();
